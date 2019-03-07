@@ -10,18 +10,6 @@ def zeep_pythonvalue(self, xmlvalue):
 
 zeep.xsd.simple.AnySimpleType.pythonvalue = zeep_pythonvalue
 
-
-
-
-
-
-
-
-
-
-
-
-
 # Класс для работы с камерой
 class Camera(object):
 
@@ -51,24 +39,9 @@ class Camera(object):
         opt_request.VideoSourceToken = self.video_source_token   
         self.img_move_options = self.img.GetMoveOptions(opt_request)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+############
+# ПРОВЕРКИ #
+############
 
     # Проверка: поддерживает ли Absolute Move
     def checkAbsoluteMove(self):
@@ -102,22 +75,6 @@ class Camera(object):
             print("PTZ Position: x = ", pos.PanTilt.x, ", y = ", pos.PanTilt.y, ", zoom = ", pos.Zoom.x)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # Проверка: показывает ли камера значение фокуса
     def checkFocusValue(self):
         pos = self.img.GetStatus({'VideoSourceToken' : self.video_source_token}).FocusStatus20.Position
@@ -141,33 +98,11 @@ class Camera(object):
         else:
             print("Camera suports Continuous Focus Move")     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  
+#################
+# ABSOLUTE MOVE #
+#################
+
     # Получение данных для Absolute Move
     def initAbsoluteMove(self):
         # Пределы движения
@@ -195,28 +130,6 @@ class Camera(object):
         self.abs_request.Position.Zoom.space = None
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def absoluteMove(self, x, y, z):
         # На случай, если камера уже двигается, выполняется остановка
         self.ptz.Stop({'ProfileToken': self.media_profile.token})
@@ -230,37 +143,9 @@ class Camera(object):
         self.ptz.AbsoluteMove(self.abs_request)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+###################
+# CONTINUOUS MOVE #
+###################
 
    # Получение данных для Continuous Move
     def initContinuousMove(self):
@@ -288,28 +173,6 @@ class Camera(object):
         self.cont_request.Velocity.Zoom.space = ''
 
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     # Функция для задания движения в режиме Continuous Move 
     # Принимает скорость и продолжительность движения по каждой оси
@@ -345,27 +208,9 @@ class Camera(object):
         self.ptz.Stop({'ProfileToken': self.cont_request.ProfileToken})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#########
+# FOCUS #
+#########
 
     # Подготовка к командам изменения фокуса
     def initContinuousFocusMove(self):
@@ -399,27 +244,6 @@ class Camera(object):
         self.img.SetImagingSettings(request)
         print ("Changed Focus Mode to MANUAL")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # Команда на изменение фокуса, 
     # требует предварительного вызова initContinuousFocusMove
     def continuousFocusMove(self, speed):
@@ -427,4 +251,3 @@ class Camera(object):
         self.f_request.Focus.Continuous.Speed = speed
         # Отправка запроса
         self.img.Move(self.f_request)
-
